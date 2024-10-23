@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from django.contrib.messages import constants as messages
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -103,9 +104,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'VOTEIT',
         'USER': 'admin',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
+        'PASSWORD': os.environ.get('VOTEIT_DB_PASSWORD'),
+        'HOST': os.environ.get('VOTEIT_DB_HOST'),
+        'PORT': '3306',
     }
 }
 
