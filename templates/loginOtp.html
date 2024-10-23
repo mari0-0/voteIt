@@ -1,0 +1,212 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block title %} Vote It | Vote {%endblock title %} 
+
+{% block styles %}
+<style>
+  .btn-inline {
+    font-size: 1.7rem;
+    position: absolute;
+    top: 0;
+    border-radius: 5px;
+    right: 20px;
+    z-index: 2;
+    border: none;
+    top: 4px;
+    height: 30px;
+    cursor: pointer;
+    color: #66d37e;
+    background-color: transparent;
+    transform: translateX(100px);
+    transform: translateY(5px);
+  }
+  button:disabled {
+    color: rgba(0, 0, 0, 0.25);
+  }
+  input:disabled {
+    background-color: #f0f0f0;
+    color: #999;
+    cursor: not-allowed;
+  }
+  .verify:disabled {
+    background-color: #ccc;
+    color: #666;
+    opacity: 0.6;
+    border-color: #666 !important;
+  }
+
+  .form-link:hover{
+    text-decoration: underline;
+  }
+</style>
+{% endblock styles %} 
+
+{% block main %}
+
+<div class="container-wrap">
+  <div id="fh5co-contact">
+    <div class="row animate-box">
+      <div
+        class="col-md-6 col-md-offset-3 text-center fh5co-heading"
+        style="margin-bottom: 0"
+      >
+        <h2 style="font-size: 4rem">Vote</h2>
+        <p>Every choice you make shapes our shared destiny—choose wisely.</p>
+      </div>
+    </div>
+    <div class="row animate-box">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-12 animate-box">
+          <form action="" method="post" id="form">
+            {% csrf_token %}
+            <input
+              class="form-control"
+              type="text"
+              id="cwid1"
+              placeholder="CwID"
+              name="cwid1"
+              style="visibility: hidden"
+            />
+            <div class="row">
+              {% if msg %}
+              <p id="error-msg" class="text-center" style="color: #ff0000">
+                {{msg}}
+              </p>
+              {% endif %}
+							
+							{% include 'messages.html' %}
+
+              <p id="error-msg" class="text-center" style="color: #ff0000"></p>
+              <div class="col-md-12" style="margin-bottom: 3rem">
+                <input
+                  class="form-control"
+                  type="text"
+                  id="cwid"
+                  placeholder="Voter Id"
+                  name="cwid"
+                  value="{{email}}"
+                  disabled
+                />
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <input
+                    type="password"
+                    class="form-control"
+                    placeholder="OTP"
+                    name="otp"
+                    required
+                  />
+                  <button
+                    class="btn-inline"
+                    type="button"
+                    id="clear"
+                    onclick="send_otp(this)"
+                  >
+                    Send OTP
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div
+                  class="form-group"
+                  style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  "
+                >
+                  <input
+                    type="submit"
+                    id="verify"
+                    value="Verify"
+                    class="btn btn-primary btn-modify verify"
+                  />
+                  <!-- <input
+                    type="submit"
+                    value="Login"
+                    class="btn btn-primary btn-modify"
+                  /> -->
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END container-wrap -->
+<script>
+  function send_otp(button) {
+    button.textContent = "Sending...";
+    button.disabled = true;
+    button.classList.add("disabled");
+
+    p = document.getElementById("error-msg");
+    p.textContent = "";
+
+    cwid = document.getElementById("cwid");
+    cwid.disabled = true;
+    value = cwid.value;
+    let countdownSeconds = 60;
+
+    // Send a GET request to the /api/data endpoint
+    fetch(`/send_opt_api?email=${value}&type=login`)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+      })
+      .then((data) => {
+        console.log(data);
+        if (data["error"] == "NoVoterExist") {
+          p.textContent = "No voter with such cwID exist";
+          button.textContent = "Send OTP";
+          button.disabled = false;
+          
+        } else {
+          console.log(data);
+          document.getElementById("cwid1").value = value;
+		      console.log(document.getElementById("cwid1").value);
+          document.getElementById("verify").disabled = false;
+          button.textContent = `Resend in ${countdownSeconds}`;
+          button.disabled = true;
+          button.classList.add("disabled");
+          const countdownInterval = setInterval(() => {
+            countdownSeconds--;
+            button.textContent = `Resend in ${countdownSeconds}`;
+
+            if (countdownSeconds === 0) {
+              clearInterval(countdownInterval);
+              button.textContent = "Send OTP";
+              button.disabled = false;
+              button.classList.remove("disabled");
+            }
+          }, 1000);
+        }
+      });
+  }
+
+  document.getElementById("verify").disabled = false;
+  let countdownSeconds = 30;
+  const button = document.getElementById("clear");
+  const countdownInterval = setInterval(() => {
+    countdownSeconds--;
+    button.textContent = `Resend in ${countdownSeconds}`;
+
+    if (countdownSeconds === 0) {
+      clearInterval(countdownInterval);
+      button.textContent = "Send OTP";
+      button.disabled = false;
+      button.classList.remove("disabled");
+    } else {
+      button.disabled = true;
+      button.classList.add("disabled");
+    }
+  }, 1000)
+
+</script>
+
+{% endblock main %}

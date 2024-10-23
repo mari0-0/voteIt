@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Vote It | Candidate
+{% endblock title %}
+
+{% block styles %}
+	<style>
+		p{
+			margin-bottom: 3px;
+		}
+		#results{
+            text-decoration: underline;
+            font-size: 2rem;
+        }
+	</style>
+{% endblock styles %}
+
+{% block main %}
+
+	<div class="container-wrap">
+
+		<div id="fh5co-blog">
+			<div class="row">
+				<div class="col-md-8">
+					<div class="fh5co-blog animate-box">
+						<div class="blog-text fh5co-heading">
+							<div class="text-center">
+								<h2 style="font-size: 2.4rem;">Decisions Made, Winners Declared</h2>
+								<h4 style="font-size: 2rem; margin-top: 7rem;">Making History, {{topCandidate.candidate.political_organization}} Emerges Victorious</h4>
+								<h4 style="font-size: 2rem; margin-top: 7rem;">{{topCandidate.candidate.name | title}} won by {{topCandidate.percentage}}%</h4>
+								
+								<a id="results" href="{% url 'candidate' id=topCandidate.candidate.id %}" > candidate details <i class="fa-solid fa-arrow-up-right-from-square fa-2xs"></i></a>
+							</div>
+						</div> 
+					</div>
+					<table class="table table-hover">
+						<thead>
+								<tr>
+								<th scope="col">#</th>
+								<th scope="col">Name</th>
+								<th scope="col">Party</th>
+								<th scope="col">Select</th>
+								</tr>
+						</thead>
+								
+						<tbody>
+								{% for candidateInfo in candidates %}
+										<tr>
+												<th scope="row">{{forloop.counter}}</th>
+												<td>{{candidateInfo.candidate.name | title}}</td>
+												<td>{{candidateInfo.candidate.political_organization | title}}</td>
+												<td>{{candidateInfo.percentage}}</td>
+										</tr>
+								{% endfor %}
+						</tbody>
+				</table>
+				</div>
+				<div class="col-md-4">
+					<div class="fh5co-blog animate-box">
+						<a href="#" class="blog-bg" style="background-image: url({{ topCandidate.candidate.picture.url }});"></a>
+						<div class="blog-text">
+							<!-- <span class="posted_on">Progressive Alliance</span> -->
+							<h3><a href="#">{{topCandidate.candidate.name | title}}</a></h3>
+							<p>{{topCandidate.candidate.formatted_dob | title}}</p>
+							<p>Age: {{topCandidate.candidate.calculate_age}}</p>
+							<p>{{topCandidate.candidate.place}}</p>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div><!-- END container-wrap -->
+
+{% endblock main %}

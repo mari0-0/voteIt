@@ -1,0 +1,126 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block title %} Vote It | Vote{%endblock title %} 
+
+{% block styles %}
+<style>
+  .btn-inline {
+    font-size: 1.7rem;
+    position: absolute;
+    top: 0;
+    border-radius: 5px;
+    right: 20px;
+    z-index: 2;
+    border: none;
+    top: 4px;
+    height: 30px;
+    cursor: pointer;
+    color: #66d37e;
+    background-color: transparent;
+    transform: translateX(100px);
+    transform: translateY(5px);
+  }
+ 	button:disabled{
+		color: rgba(0, 0, 0, 0.25);
+	}
+	input:disabled {
+		background-color: #f0f0f0 ;
+		color: #999;
+		cursor: not-allowed;
+	}
+	.verify:disabled {
+		background-color: #ccc;
+		color: #666;
+		opacity: 0.6;
+		border-color: #666 !important;
+	}
+</style>
+{% endblock styles %} {% block main %}
+
+<div class="container-wrap">
+  <div id="fh5co-contact">
+    <div class="row animate-box">
+      <div class="col-md-6 col-md-offset-3 text-center fh5co-heading">
+        <h2 style="font-size: 4rem">Enter Password</h2>
+        <p>Empower your voice — register to make a difference today.</p>
+      </div>
+    </div>
+	<form action="" method="post" id="form">
+		{% csrf_token %}
+		<input class="form-control" type="text" id="email1"  name="cwid1" value="{{cwid}}" style="visibility: hidden;">
+		<div class="row animate-box">
+		<div class="col-md-6 col-md-offset-3">
+			<div class="col-md-12 animate-box">
+                <div class="row">
+
+                    {% if msg_success %}
+                        <p id="error-msg" class="text-center" style="color: #66d37e;">{{msg_success}}</p>
+                    {% endif %}
+                    {% if msg %}
+                        <p id="error-msg" class="text-center" style="color: #ff0000;">{{msg}}</p>
+                    {% endif %}
+
+                    {% include 'messages.html' %}
+
+                    <p id="error-msg" class="text-center" style="color: #ff0000;"></p>
+
+                    <div class="col-md-12" style="margin-bottom: 3rem">
+                        <input class="form-control" type="email" id="email" value="{{cwid}}" name="cwid" disabled/>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input type="password" class="form-control" placeholder="Password" name="password">
+                        </div>
+					</div>
+                    <div class="col-md-12">
+                        <div
+                            class="form-group"
+                            style="
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            "
+                        >
+                            <input type="submit" id="verify" value="Verify" class="btn btn-primary btn-modify verify">
+
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+		</div>
+	</form>
+</div>
+</div>
+
+<script>
+	function send_otp(button) {
+		p = document.getElementById('error-msg')
+		if (p){
+			p.textContent = ''
+		}
+
+		email = document.getElementById('email')
+		
+		value = email.value;
+
+		// Send a GET request to the /api/data endpoint
+		fetch(`/verify-api?email=${value}`)
+		.then(response => {
+			if (response.ok) {
+				return response.json();
+			}
+		})
+		.then(data => {
+			if (data["success"]){
+				window.location.href = "/login"
+			} else {
+				p.textContent = "Invalid OTP"
+			}
+		})
+	}
+
+</script>
+
+{% endblock main %}

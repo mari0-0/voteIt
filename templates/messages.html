@@ -1,0 +1,7 @@
+{% if messages %}
+    {% for message in messages %}
+        <p id="error-msg" class="text-center" style="color: #ff0000">
+        {{message}}
+        </p>
+    {% endfor %}
+{% endif %}

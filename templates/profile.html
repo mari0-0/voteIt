@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Vote It | Candidate
+{% endblock title %}
+
+{% block styles %}
+	<style>
+		p{
+			margin-bottom: 3px;
+		}
+	</style>
+{% endblock styles %}
+
+{% block main %}
+
+	<div class="container-wrap">
+
+		<div id="fh5co-blog">
+			<div class="row">
+				<div class="col-md-4">
+					<div class="fh5co-blog animate-box">
+						<a href="#" class="blog-bg" style="background-image: url({{ candidate.picture.url }});"></a>
+						<div class="blog-text">
+							<!-- <span class="posted_on">Progressive Alliance</span> -->
+							<h3><a href="#">{{candidate.name | title}}</a></h3>
+							<p>{{candidate.formatted_dob | title}}</p>
+							<p>Age: {{candidate.calculate_age}}</p>
+							<p>{{candidate.place}}</p>
+
+						</div> 
+					</div>
+				</div>
+				<div class="col-md-8">
+					<div class="fh5co-blog animate-box">
+						<div class="blog-text">
+							<span class="new-line"><h3 style="display: inline;font-size: 1.4rem;">political organization: &nbsp;&nbsp;</h3><p style="display: inline;">{{candidate.political_organization | title}}</p></span><hr>
+							<span class="new-line"><h3 style="display: inline;font-size: 1.4rem;">Degrees Earned: &nbsp;&nbsp;</h3><p style="display: inline;">{{candidate.degrees}}</p></span><hr>
+							<span class="new-line"><h3 style="display: inline;font-size: 1.4rem;">Previous Job Positions: &nbsp;&nbsp;</h3><p style="display: inline;">{{candidate.previous_jobs}}</p></span><hr>
+							<span class="new-line"><h3 style="display: inline;font-size: 1.4rem;">Relevant Work Experience: &nbsp;&nbsp;</h3><p style="display: inline;">{{candidate.work_experience}}</p></span><hr>
+							<span class="new-line"><h3 style="display: inline;font-size: 1.4rem;">Notable Achievements: &nbsp;&nbsp;</h3><p style="display: inline;">{{candidate.achivements}}</p></span><hr>
+							<span class="new-line"><h3 style="display: inline;font-size: 1.4rem;">Vision for the Community or Country: &nbsp;&nbsp;</h3><p style="display: inline;">{{candidate.vison}}</p></span><hr>
+							<span class="new-line"><h3 style="display: inline;font-size: 1.4rem;">Goals and Objectives if Elected: &nbsp;&nbsp;</h3><p style="display: inline;">{{candidate.goals}}</p></span><hr>
+						</div> 
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12" style="padding: 0 5rem;">
+					<p style="margin-bottom: 2rem;">{{candidate.description | linebreaksbr}}</p>
+				</div>
+			</div>
+		</div>
+	</div><!-- END container-wrap -->
+
+{% endblock main %}

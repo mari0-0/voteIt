@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Vote It | Vote List
+{% endblock title %}
+
+
+{% block styles %}
+    <style>
+        #timer{
+            font-size: 2rem;
+            text-align: center;
+        }
+        .verify:disabled {
+            background-color: #ccc;
+            color: #666;
+            opacity: 0.6;
+            border-color: #666 !important;
+        }
+        #results{
+            text-decoration: underline;
+            font-size: 2rem;
+        }
+    </style>
+{% endblock styles %}
+
+{% block main %}
+
+<div class="container-wrap" >
+    <div id="fh5co-contact">
+        <div class="row animate-box">
+            <div class="col-md-6 col-md-offset-3 text-center fh5co-heading" >
+                <h2 style="font-size: 4rem;">Select The Candidate</h2>
+                <p>Every choice you make shapes our shared destiny—choose wisely.</p>
+                <h2 style="font-size: 2rem;">Countdown</h2>
+                <h2 id="timer"></h2>
+                <p>{{countDown}}</p>
+                <a id="results" href="/results"></a>
+                {% include 'messages.html' %}
+            </div>
+        </div>
+        <div class="row animate-box" style="display: flex;justify-content: center;align-items:center;">
+            <div class="col-lg-8">
+                <form method="post">
+                    {% csrf_token %}
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Party</th>
+                            <th scope="col">Select</th>
+                            </tr>
+                        </thead>
+                            
+                        <tbody>
+                            {% for candidate in candidates %}
+                                <tr>
+                                    <th scope="row">{{forloop.counter}}</th>
+                                    <td>{{candidate.name | title}}</td>
+                                    <td>{{candidate.political_organization | title}}</td>
+                                    <td><input type="radio" name="vote" value="{{candidate.id}}" id="vote" {{disabled}}></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="mt-3" style="display: flex;justify-content: center;align-items:center;">
+                        <div class="col-lg-8" style="display: flex;justify-content: center;align-items:center;">
+                            <input type="submit" id="verify" value="Vote" class="btn btn-primary btn-modify verify" {{disabled}}>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    
+    var deadline = new Date("{{countDown}}").getTime();
+    var x = setInterval(function() {
+        var now = new Date().getTime();
+        var timeLeft = deadline - now ;
+    
+        var days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+    
+        // Pad numbers with leading zeros if needed
+        days = ('0' + days).slice(-2);
+        hours = ('0' + hours).slice(-2);
+        minutes = ('0' + minutes).slice(-2);
+        seconds = ('0' + seconds).slice(-2);
+    
+        document.getElementById("timer").innerHTML = days + ":" + hours + ":"
+        + minutes + ":" + seconds ;
+    
+        if (timeLeft < 0) {
+            document.getElementById("verify").disabled = true;
+            document.querySelectorAll("#vote").forEach(item => {
+                item.disabled = true;
+            });
+            clearInterval(x);
+            document.getElementById("timer").innerHTML = "Voting period has ended.";
+            results = document.getElementById("results")
+            results.innerHTML = `view results <i class="fa-solid fa-arrow-up-right-from-square fa-2xs"></i>`
+            results.href = "/results"
+        }
+    }, 1000);
+    
+</script>
+{% endblock main %}
