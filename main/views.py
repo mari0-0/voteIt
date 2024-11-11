@@ -237,16 +237,14 @@ def send_opt_api(request):
 def register(request):
   if request.method == "POST":
     email = request.POST.get('email1')
-
     firstname = request.POST.get('first_name')
     lastname = request.POST.get('last_name')
     dob = request.POST.get('date_of_birth')
-
-    print(dob)
-
     dob_obj = datetime.strptime(dob, '%m-%d-%Y')  # Parse the original dob format
     dob = dob_obj.strftime('%Y-%m-%d')  # Convert to yyyy-mm-dd
-
+    address = request.POST.get('address')
+    country = request.POST.get('country')
+    gender = request.POST.get('gender')
 
     if lastname and firstname and email:
       userEnteredOtp = request.POST.get('otp')      
@@ -266,7 +264,7 @@ def register(request):
           return redirect('vote')
       except: pass
       
-      return redirect(f'/verify?email={email}&firstname={firstname}&lastname={lastname}&dob={dob}')
+      return redirect(f'/verify?email={email}&firstname={firstname}&lastname={lastname}&dob={dob}&address={address}&country={country}&gender={gender}')
     
     messages.error(request, "Enter all details")
     return render(request, 'register1.html',{'active': 'register'})
@@ -278,6 +276,9 @@ def verfiy_otp(request):
   firstname = request.GET.get('firstname')
   lastname = request.GET.get('lastname')
   dob = request.GET.get('dob')
+  address = request.GET.get('address')
+  country = request.GET.get('country')
+  gender = request.GET.get('gender')
 
   if request.method == "POST":
     password1 = request.POST.get('password1')
@@ -294,7 +295,7 @@ def verfiy_otp(request):
         continue
       except:
         break
-    voter = Voter.objects.create(name=firstname+" "+lastname, mail=email, cwid=cwid.upper(), dateOfBirth=dob)
+    voter = Voter.objects.create(name=firstname+" "+lastname, mail=email, cwid=cwid.upper(), dateOfBirth=dob, country=country, address=address, gender=gender)
     user = User.objects.create_user(cwid,password=password1, email=email)
     voter.user = user
     voter.isVerified = True

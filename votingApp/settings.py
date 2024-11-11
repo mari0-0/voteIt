@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-de9w!gev-2sr%v4*217udkev)#4oitqa($ifj=%kbpuil6+d5-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 MESSAGE_TAGS = {
     messages.DEBUG: 'alert-secondary',
@@ -99,16 +99,16 @@ WSGI_APPLICATION = 'votingApp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'VOTEIT',
-        'USER': 'admin',
-        'PASSWORD': os.environ.get('VOTEIT_DB_PASSWORD'),
-        'HOST': os.environ.get('VOTEIT_DB_HOST'),
-        'PORT': '3306',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'VOTEIT',
+#         'USER': 'admin',
+#         'PASSWORD': os.environ.get('VOTEIT_DB_PASSWORD'),
+#         'HOST': os.environ.get('VOTEIT_DB_HOST'),
+#         'PORT': '3306',
+#     }
+# }
 
 # DATABASES = {
 #     'default': {
@@ -116,6 +116,13 @@ DATABASES = {
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        "ENGINE": "libsql.db.backends.sqlite3",
+        "NAME": "libsql://vote-it-ontelas1.turso.io?authToken=",
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

@@ -13,6 +13,9 @@ class Voter(models.Model):
   isVoted = models.BooleanField(default=False, null=True)
   isVerified = models.BooleanField(default=False, null=True)
   dateOfBirth = models.DateField(null=True)
+  country = models.CharField(max_length=50, null=True, blank=True)
+  gender = models.CharField(max_length=10, choices=[('Male', 'Male'), ('Female', 'Female'), ('Other', 'Other')], null=True, blank=True)
+  address = models.TextField(null=True, blank=True)
 
   def __str__(self):
     return self.name

@@ -914,6 +914,13 @@ input[type="text"] {
   height: 50px;
 }
 
+select{
+  height: 50px;
+  width: 100%;
+  padding: 0 10px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+}
+
 .form-group {
   margin-bottom: 30px;
 }

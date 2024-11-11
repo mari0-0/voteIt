@@ -150,15 +150,6 @@ input.invalid {
 
               <div class="col-md-12">
                 <div class="form-group">
-                  <!-- <input
-                    type="date"
-                    id="dob"
-                    class="form-control"
-                    name="date_of_birth"
-                    max="" 
-                    value="Date of Birth"
-                    required
-                  /> -->
                   <input 
                     type="text" 
                     id="txtDate"
@@ -171,6 +162,38 @@ input.invalid {
                   />
                 </div>
               </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <select id="country" name="country">
+                    <option value="" disabled selected>Select Nationality</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <select id="gender" name="gender">
+                    <option value="" disabled selected>Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Address"
+                    name="address"
+                    required
+                  />
+                </div>
+              </div>
+
             </div>
 
             <div class="tab">
@@ -255,7 +278,24 @@ input.invalid {
 </div>
 
 
-
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const countrySelect = document.getElementById('country');
+  
+    fetch('https://restcountries.com/v3.1/all')
+      .then(response => response.json())
+      .then(data => {
+        const sortedCountries = data.sort((a, b) => a.name.common.localeCompare(b.name.common));
+        sortedCountries.forEach(country => {
+          const option = document.createElement('option');
+          option.value = country.name.common;
+          option.textContent = country.name.common;
+          countrySelect.appendChild(option);
+        });
+      })
+      .catch(error => console.log('Error fetching country data:', error));
+  });  
+</script>
 
 <script>
   var currentTab = 0; // Current tab is set to be the first tab (0)
@@ -373,10 +413,6 @@ input.invalid {
     document.getElementById('ageCheck').addEventListener('change', updateSubmitButton);
   });
 </script>
-
-
-
-
 
 <script>
   
