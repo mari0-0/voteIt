@@ -120,7 +120,7 @@ WSGI_APPLICATION = 'votingApp.wsgi.application'
 DATABASES = {
     'default': {
         "ENGINE": "libsql.db.backends.sqlite3",
-        "NAME": "libsql://vote-it-ontelas1.turso.io?authToken=",
+        "NAME": f"libsql://vote-it-ontelas1.turso.io?authToken={os.environ.get('VOTEIT_TURSO_AUTH_TOKEN')}",
     }
 }
 
