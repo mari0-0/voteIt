@@ -423,7 +423,7 @@ input.invalid {
     button.disabled = true;
     button.classList.add("disabled");
     const p = document.getElementById("otp-error");
-
+    p.textContent = "";
     email = document.getElementById("email");
     email.disabled = true;
     value = email.value;
@@ -451,6 +451,7 @@ input.invalid {
           button.disabled = false;
           isOtpSent = false;
         } else {
+          p.textContent = "";
           isOtpSent = true;
           document.getElementById("email1").value = value;
 		      console.log(document.getElementById("email1").value);
@@ -458,9 +459,9 @@ input.invalid {
           button.disabled = true;
           button.classList.add("disabled");
 
-          if(ageCheck.checked) {
-            document.getElementById("verify").disabled = false;
-          }
+          //if(ageCheck.checked) {
+          //  document.getElementById("verify").disabled = false;
+          //}
 
           const countdownInterval = setInterval(() => {
             countdownSeconds--;
