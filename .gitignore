@@ -1,2 +1,4 @@
 venv
 t.py
+*.save
+__pycache__
