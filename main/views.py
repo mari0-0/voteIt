@@ -352,7 +352,7 @@ def send_cwid_register(email):
                       </div>
                       <div style="padding: 20px; background-color: rgb(255, 255, 255);">
                         <div style="color: rgb(0, 0, 0); text-align: center;">
-                          <h1 style="margin: 1rem 0">Your CwId</h1>
+                          <h1 style="margin: 1rem 0">Your voterId</h1>
                           <p style="padding-bottom: 16px">Please use this Voter Id below to Vote Now.</p>
                           <p style="padding-bottom: 16px; letter-spacing: 1rem; font-size:2rem;"><strong style="font-size: 50%">{cwId}</strong></p>
                           <p style="padding-bottom: 16px">If you didn’t request this, you can ignore this email.</p>
@@ -403,7 +403,7 @@ def forgotCwid(request):
       return render(request, 'forgotCwid.html')
     
     send_cwid_register(email)
-    messages.success(request, "Cwid sent to your email")
+    messages.success(request, "voterId sent to your email")
     return redirect('vote')
   
   return render(request, 'forgotCwid.html')
