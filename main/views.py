@@ -25,28 +25,33 @@ def index(request):
   
   return render(request, 'index.html',{'active': 'index', 'isVotingEnded': isVotingEnded})
 
+@login_required
 def results(request):
     candidates = Candidate.objects.all()
     total_votes = candidates.aggregate(Sum('votesCount'))['votesCount__sum'] or 1  # Avoid division by zero
 
-    # Calculate percentage for each candidate and store in a list
     candidates_with_percentage = []
     for candidate in candidates:
-        percentage = round((candidate.votesCount / total_votes) * 100, 2)
-        candidates_with_percentage.append({
-            'candidate': candidate,
-            'percentage': percentage
-        })
+      percentage = round((candidate.votesCount / total_votes) * 100, 4)
+      candidates_with_percentage.append({
+          'candidate': candidate,
+          'percentage': percentage
+      })
 
-    # Sort the list by percentage in descending order
     candidates_with_percentage.sort(key=lambda x: x['percentage'], reverse=True)
-    top_candidate = candidates_with_percentage[0] if candidates_with_percentage else None
-    print(top_candidate)
-    return render(request, 'results.html', {
-        'active': 'results',
-        'candidates': candidates_with_percentage,
-        'topCandidate': top_candidate
 
+    isTied = False
+    if len(candidates_with_percentage) > 1:
+      top_percentage = candidates_with_percentage[0]['percentage']
+      isTied = any(c['percentage'] == top_percentage for c in candidates_with_percentage[1:])
+
+    top_candidate = candidates_with_percentage[0] if candidates_with_percentage else None
+    
+    return render(request, 'results.html', {
+      'active': 'results',
+      'candidates': candidates_with_percentage,
+      'topCandidate': top_candidate,
+      'isTied': isTied
     })
 
 @login_required
@@ -410,7 +415,6 @@ def forgotCwid(request):
 
 
 #---------API-------------#
-# Index View - Show Voting Countdown Status
 def index_API(request):
   countDownItem = VotingCountdown.objects.first()
   remainingTime = countDownItem.end_time - timezone.make_aware(datetime.now())
@@ -424,8 +428,6 @@ def index_API(request):
       'isVotingEnded': isVotingEnded
   })
 
-
-# Results View - Show Voting Results
 def results_API(request):
   candidates = Candidate.objects.all()
   total_votes = candidates.aggregate(Sum('votesCount'))['votesCount__sum'] or 1  # Avoid division by zero
@@ -449,15 +451,11 @@ def results_API(request):
     'topCandidate': top_candidate
   })
 
-
-# Candidates List View - List All Candidates
 def candidates_list_API(request):
   candidates = Candidate.objects.all()
   candidate_data = [{'id': candidate.id, 'name': candidate.name} for candidate in candidates]
   return JsonResponse({'active': 'candidates', 'candidates': candidate_data})
 
-
-# Single Candidate View - Get Details of a Candidate
 def candidate_detail_API(request, id):
   try:
     candidate = Candidate.objects.get(id=id)
@@ -473,8 +471,6 @@ def candidate_detail_API(request, id):
     }
   })
 
-
-# Vote List View - Get Voters for a Candidate
 def vote_list_API(request):
   # Assuming we need to authenticate the user or handle logic for voting
   if not request.user.is_authenticated:
@@ -485,8 +481,6 @@ def vote_list_API(request):
 
   return JsonResponse({'active': 'votes', 'votes': votes_data})
 
-
-# Register User View - User Registration (Assuming username, email, password)
 def register_user_API(request):
   if request.method == 'POST':
     username = request.POST.get('username')
@@ -501,8 +495,6 @@ def register_user_API(request):
 
   return JsonResponse({'error': 'Invalid request method'}, status=400)
 
-
-# User Login View - Login User
 def login_user_API(request):
   if request.method == 'POST':
     username = request.POST.get('username')
@@ -517,8 +509,6 @@ def login_user_API(request):
 
   return JsonResponse({'error': 'Invalid request method'}, status=400)
 
-
-# OTP Verification (Used for user registration or other processes)
 def verify_otp_API(request):
   otp_code = request.POST.get('otp')
   user = request.user  # Assuming user is logged in already

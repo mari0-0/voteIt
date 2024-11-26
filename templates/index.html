@@ -24,17 +24,16 @@
 										{% endif %}
 										<p>
 											
-											{% if isVotingEnded %}
-												<a class="btn btn-primary btn-demo" href="{% url 'results' %}"></i> View Results</a> 
-											{% else %}
+
 												
-												{% if request.user.is_authenticated %}
-													<a class="btn btn-primary btn-demo" href="{% url 'voteList' %}"></i> Vote Now</a> 
-												{% else %}
-													<a class="btn btn-primary btn-demo" href="{% url 'vote' %}"></i> Vote Now</a> 
-												{% endif %}
+										{% if request.user.is_authenticated and isVotingEnded %}
+											<a class="btn btn-primary btn-demo" href="{% url 'results' %}"></i> View Results</a> 
+										{% elif request.user.is_authenticated %}
+											<a class="btn btn-primary btn-demo" href="{% url 'voteList' %}"></i> Vote Now</a>
+										{% else %}
+											<a class="btn btn-primary btn-demo" href="{% url 'vote' %}"></i> Vote Now</a> 
+										{% endif %}
 													
-											{% endif %}
 												
 											<a href="{% url 'candidates' %}" class="btn btn-primary btn-learn">View Candidates</a>
 										</p>
@@ -55,15 +54,14 @@
 										{% else %}
 											<h2>Your <a href="{% url 'vote' %}" target="_blank">vote</a>, your voice.</h2>
 										{% endif %}										 <p>
-											{% if isVotingEnded %}
-												<a class="btn btn-primary btn-demo" href="{% url 'results' %}"></i> View Results</a> 
-											{% else %}
-												{% if request.user.is_authenticated %}
-													<a class="btn btn-primary btn-demo" href="{% url 'voteList' %}"></i> Vote Now</a> 
-												{% else %}
-													<a class="btn btn-primary btn-demo" href="{% url 'vote' %}"></i> Vote Now</a> 
-												{% endif %}
-											{% endif %}
+
+										{% if request.user.is_authenticated and isVotingEnded %}
+											<a class="btn btn-primary btn-demo" href="{% url 'results' %}"></i> View Results</a> 
+										{% elif request.user.is_authenticated %}
+											<a class="btn btn-primary btn-demo" href="{% url 'voteList' %}"></i> Vote Now</a>
+										{% else %}
+											<a class="btn btn-primary btn-demo" href="{% url 'vote' %}"></i> Vote Now</a> 
+										{% endif %}
 											<a href="{% url 'candidates' %}" class="btn btn-primary btn-learn">View Candidates</a>
 										</p>
 				   				</div>
@@ -87,14 +85,12 @@
 												
 
 										 <p>
-											{% if isVotingEnded %}
+											{% if request.user.is_authenticated and isVotingEnded %}
 												<a class="btn btn-primary btn-demo" href="{% url 'results' %}"></i> View Results</a> 
+											{% elif request.user.is_authenticated %}
+												<a class="btn btn-primary btn-demo" href="{% url 'voteList' %}"></i> Vote Now</a>
 											{% else %}
-												{% if request.user.is_authenticated %}
-													<a class="btn btn-primary btn-demo" href="{% url 'voteList' %}"></i> Vote Now</a> 
-												{% else %}
-													<a class="btn btn-primary btn-demo" href="{% url 'vote' %}"></i> Vote Now</a> 
-												{% endif %}
+												<a class="btn btn-primary btn-demo" href="{% url 'vote' %}"></i> Vote Now</a> 
 											{% endif %}
 											<a href="{% url 'candidates' %}" class="btn btn-primary btn-learn">View Candidates</a>
 										</p>
