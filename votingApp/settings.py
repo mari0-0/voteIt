@@ -120,7 +120,7 @@ WSGI_APPLICATION = 'votingApp.wsgi.application'
 DATABASES = {
     'default': {
         "ENGINE": "libsql.db.backends.sqlite3",
-        "NAME": f"libsql://vote-it-ontelas1.turso.io?authToken={os.environ.get('VOTEIT_TURSO_AUTH_TOKEN')}",
+        "NAME": f"libsql://vote-it-ontelas1.turso.io?authToken=eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3MzEzMDc3ODksImlkIjoiOThiODU4MmItZTZkZi00MTlmLWEzOTMtYzc0M2M0OTQwNmQ3In0.qrTQIZQzDX5j1Pkqccfg38Ur_x0Wux4mXd75tnW6hRBbEFtHwrGK-gpVCfk5qI6fC_YW_H0t2L306yPh6sASCg",
     }
 }
 
