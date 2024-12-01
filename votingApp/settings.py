@@ -19,13 +19,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 LOGIN_URL = '/vote/'
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-de9w!gev-2sr%v4*217udkev)#4oitqa($ifj=%kbpuil6+d5-'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
@@ -38,19 +35,12 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
  }
 
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.zoho.in'
-# EMAIL_PORT = 587  # Replace with the appropriate port for your SMTP server
-# EMAIL_HOST_USER = 'voteitofficial@zohomail.in'
-# EMAIL_HOST_PASSWORD = 'uJ1PGH3AgyFt'
-# EMAIL_USE_TLS = True  # Use TLS encryption for secure connection
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587  # Replace with the appropriate port for your SMTP server
+EMAIL_PORT = 587 
 EMAIL_HOST_USER = 'noreply.voteit0fficial@gmail.com'
 EMAIL_HOST_PASSWORD = 'uiygozywfqxxydua'
-EMAIL_USE_TLS = True  # Use TLS encryption for secure connection
+EMAIL_USE_TLS = True
 
 
 # Application definition
@@ -96,20 +86,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'votingApp.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'VOTEIT',
-#         'USER': 'admin',
-#         'PASSWORD': os.environ.get('VOTEIT_DB_PASSWORD'),
-#         'HOST': os.environ.get('VOTEIT_DB_HOST'),
-#         'PORT': '3306',
-#     }
-# }
-
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
@@ -148,7 +124,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/New_York'
 
 USE_I18N = True
 
