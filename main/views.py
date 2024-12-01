@@ -1,9 +1,9 @@
+import random
+from .models import *
+from django.conf import settings
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.core.mail import EmailMultiAlternatives
-from django.conf import settings
-import random
-from django.http import JsonResponse
-from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
@@ -11,6 +11,7 @@ from django.contrib import messages
 from django.utils import timezone
 from datetime import datetime, timedelta
 from django.db.models import Sum
+from datetime import timezone as tz
 
 # Create your views here.
 
@@ -75,54 +76,60 @@ def voteList(request):
       messages.error(request, "You have already voted")
       return redirect("voteList")
 
-    VoterVotedToItem = VoterVotedTo.objects.create(voter=voter, candidate=candidate)
     candidate.votesCount += 1
     candidate.save()
     voter.isVoted = True
     voter.save()
     messages.success(request, 'You have voted successfully')
-    countDownItem = VotingCountdown.objects.first()
-    countDown = countDownItem.formatted_end_time()
-    candidates = Candidate.objects.all()
-    return render(request, 'vote-list.html',{'active': 'vote', 'countDown': countDown, 'candidates': candidates, 'disabled': 'disabled'})
 
+    countDownItem = VotingCountdown.objects.first()
+    countDown = countDownItem.end_time.astimezone(timezone.get_current_timezone())
+    candidates = Candidate.objects.all()
+    return render(request, 'vote-list.html', {
+      'active': 'vote',
+      'countDown': countDown.strftime('%Y-%m-%d %H:%M:%S'),
+      'candidates': candidates,
+      'disabled': 'disabled'
+    })
 
   countDownItem = VotingCountdown.objects.first()
-  countDown = countDownItem.formatted_end_time()
+  countDown = countDownItem.end_time.astimezone(timezone.get_current_timezone())
   candidates = Candidate.objects.all()
-  remainingTime = countDownItem.end_time - timezone.make_aware(datetime.now())
+  remainingTime = countDownItem.end_time - timezone.now()
+
+  print('countDown', countDown.strftime('%Y-%m-%d %H:%M:%S'))
+  print('remainingTime', remainingTime)
 
   if remainingTime < timedelta(seconds=0):
-    return render(request, 'vote-list.html',{'active': 'vote', 'countDown': countDown, 'candidates': candidates, 'disabled': 'disabled'})
-  
+    return render(request, 'vote-list.html', {
+      'active': 'vote',
+      'countDown': countDown.strftime('%Y-%m-%d %H:%M:%S'),
+      'candidates': candidates,
+      'disabled': 'disabled'
+    })
+
   disabled = ''
   voter = Voter.objects.get(user=request.user)
   if voter.isVoted:
     messages.error(request, "You have already voted")
     disabled = 'disabled'
-  return render(request, 'vote-list.html',{'active': 'vote', 'countDown': countDown, 'candidates': candidates, 'disabled': disabled})
+
+  return render(request, 'vote-list.html', {
+    'active': 'vote',
+    'countDown': countDown.strftime('%Y-%m-%d %H:%M:%S'),
+    'candidates': candidates,
+    'disabled': disabled
+  })
 
 def vote(request):
   if request.method == "POST":
     cwid = request.POST.get('cwid')
     password = request.POST.get('password')
-    # userEnteredOtp = request.POST.get('otp')
-
 
     userExists = User.objects.filter(username=cwid.upper()).exists()
     if not userExists:
       messages.error(request, "No user exist with that cwid")
       return redirect('vote')
-
-    # otp = Otp.objects.get(email=email).otp
-    # try:
-    #   if int(userEnteredOtp) != int(otp):
-    #     messages.error(request, "Invalid OTP")
-    #     return render(request, 'vote.html',{'active': 'vote'})
-    # except:
-    #   messages.error(request, "Invalid OTP")
-    #   return render(request, 'vote.html',{'active': 'vote'})
-
 
     user = authenticate(request, username=cwid.upper(), password=password)
     if user is not None:
