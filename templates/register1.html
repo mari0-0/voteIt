@@ -283,8 +283,9 @@ input.invalid {
     const countrySelect = document.getElementById('country');
   
     fetch('https://countriesnow.space/api/v0.1/countries')
-      .then(response => response.json()["data"])
+      .then(response => response.json())
       .then(data => {
+        data = data["data"];
         const sortedCountries = data.sort((a, b) => a.country.localeCompare(b.country));
         sortedCountries.forEach(country => {
           const option = document.createElement('option');
