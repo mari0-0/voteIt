@@ -45,7 +45,7 @@ Vote It | Candidate
 									<h2 style="font-size: 2.4rem; margin-top: 7rem;">{{candidates.0.candidate.name | title}}</h2>
 									<h2 style="font-size: 2.4rem; margin-top: 2rem;">And</h2>
 									<h2 style="font-size: 2.4rem; margin-top: 2rem;">{{candidates.1.candidate.name | title}}</h2>
-									<h2 style="font-size: 2.4rem; margin-top: 2rem;">Got tied with {{candidates.1.percentage | title}}%</h2>									
+									<h2 style="font-size: 2.4rem; margin-top: 2rem;">Got tied with {{candidates.1.percentage | title}} %</h2>									
 								</div>
 							</div> 
 						</div>
@@ -82,7 +82,7 @@ Vote It | Candidate
 														<th scope="row">{{forloop.counter}}</th>
 														<td>{{candidateInfo.candidate.name | title}}</td>
 														<td>{{candidateInfo.candidate.political_organization | title}}</td>
-														<td>{{candidateInfo.percentage}}%</td>
+														<td>{{candidateInfo.percentage}} %</td>
 												</tr>
 										{% endfor %}
 								</tbody>
@@ -104,7 +104,7 @@ Vote It | Candidate
 								<div class="text-center">
 									<h2 style="font-size: 2.4rem;">Decisions Made, Winners Declared</h2>
 									<h4 style="font-size: 2rem; margin-top: 7rem;">Making History, {{topCandidate.candidate.political_organization}} Emerges Victorious</h4>
-									<h4 style="font-size: 2rem; margin-top: 7rem;">{{topCandidate.candidate.name | title}} won by {{topCandidate.percentage}}%</h4>
+									<h4 style="font-size: 2rem; margin-top: 7rem;">{{topCandidate.candidate.name | title}} won by {{topCandidate.percentage}} %</h4>
 									
 									<a id="results" href="{% url 'candidate' id=topCandidate.candidate.id %}" > candidate details <i class="fa-solid fa-arrow-up-right-from-square fa-2xs"></i></a>
 								</div>
@@ -126,7 +126,7 @@ Vote It | Candidate
 													<th scope="row">{{forloop.counter}}</th>
 													<td>{{candidateInfo.candidate.name | title}}</td>
 													<td>{{candidateInfo.candidate.political_organization | title}}</td>
-													<td>{{candidateInfo.percentage}}%</td>
+													<td>{{candidateInfo.percentage}} %</td>
 											</tr>
 									{% endfor %}
 							</tbody>
