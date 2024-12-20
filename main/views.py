@@ -128,7 +128,7 @@ def vote(request):
 
     userExists = User.objects.filter(username=cwid.upper()).exists()
     if not userExists:
-      messages.error(request, "No user exist with that cwid")
+      messages.error(request, "No user exist with that voter id")
       return redirect('vote')
 
     user = authenticate(request, username=cwid.upper(), password=password)
